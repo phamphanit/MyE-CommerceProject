@@ -1,26 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
-using FinalProject.Models;
-using Microsoft.AspNetCore.Http;
 
-namespace FinalProject.Helpers
+namespace FinalProject.MyTools
 {
     public class MyTools
     {
-        public static async Task<string> ProcessUploadHinh(IFormFile hinh, string folder)
-        {
-            string fileName = string.Empty;
-            var fName = Path.Combine(FullPathFolderName, folder, hinh.FileName);
-            using (var file = new FileStream(fName, FileMode.Create))
-            {
-                await hinh.CopyToAsync(file);
-                fileName = hinh.FileName;
-            }
-            return fileName;
-
-        }
         public static string FullPathFolderName = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh");
         public static string NoImage = "noimage.jpg";
         public static string CheckImageExist(string fileName, string folder)

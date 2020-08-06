@@ -65,17 +65,14 @@ namespace FinalProject.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MaLoai,TenLoai,MaLoaiCha")] Loai loai)
         {
-            try
+            if (ModelState.IsValid)
             {
                 _context.Add(loai);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                ViewData["MaLoaiCha"] = new SelectList(_context.loais, "MaLoai", "TenLoai", loai.MaLoaiCha);
-                return View(loai);
-            }
+            ViewData["MaLoaiCha"] = new SelectList(_context.loais, "MaLoai", "TenLoai", loai.MaLoaiCha);
+            return View(loai);
         }
 
         // GET: Admin/Loai/Edit/5

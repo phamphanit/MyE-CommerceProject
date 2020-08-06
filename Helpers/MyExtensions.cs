@@ -1,10 +1,4 @@
-namespace FinalProject.Helpers
+$HEADER$namespace $NAMESPACE$
 {
-    public static class MyExtensions
-    {
-        public static string ToVnd(this double donGia)
-        {
-            return donGia.ToString("#,###0") + "đ";
-        }
-    }
+  public class $CLASS$ {$END$}
 }
