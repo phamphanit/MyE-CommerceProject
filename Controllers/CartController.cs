@@ -68,7 +68,7 @@ namespace FinalProject.Controllers
 
             return RedirectToAction("Index");
         }
-        public IActionResult RemoveCartItem(Guid id)
+        public IActionResult RemoveCartItem(Guid id, bool isAjaxCall = false)
         {
             var myCart = CartItems;
             var cartItem = myCart.SingleOrDefault(p => p.Id == id);

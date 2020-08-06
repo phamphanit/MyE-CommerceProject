@@ -10,38 +10,46 @@
                     <div class="table-content table-responsive">
                         <table>
                             <thead>
-                                <tr>
-                                    <th class="product-thumbnail">Image</th>
-                                    <th class="product-name">Product</th>
-                                    <th class="product-price">Price</th>
-                                    <th class="product-quantity">Quantity</th>
-                                    <th class="product-subtotal">Total</th>
-                                    <th class="product-remove">Remove</th>
-                                </tr>
+                            <tr>
+                                <th class="product-thumbnail">Image</th>
+                                <th class="product-name">Product</th>
+                                <th class="product-price">Price</th>
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-subtotal">Total</th>
+                                <th class="product-remove">Remove</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model)
-                                {
+                            @foreach (var item in Model)
+                            {
+                                <tr class="cart-item-@item.Id">
+                                    <td class="product-thumbnail">
+                                        <a asp-controller="HangHoa" asp-action="Detail" asp-route-id="@item.Id">
+                                            <img src="~/Hinh/HangHoa/@item.Hinh" alt="man"/>
+                                        </a>
+                                    </td>
+                                    <td class="product-name">
+                                        <a href="#">@item.TenHH</a>
+                                    </td>
+                                    <td class="product-price">
+                                        <span class="amount">@item.ThanhTien</span>
+                                    </td>
+                                    <td class="product-quantity">
+                                        <input type="number" value="@item.SoLuong">
+                                    </td>
+                                    <td class="product-subtotal">@item.ThanhTien.ToVnd()</td>
+                                    <td class="product-remove">
+                                        <a asp-controller="Cart" asp-action="RemoveCartItem" asp-route-id="@item.Id">
+                                            <i class="fa fa-times"></i>
+                                        </a>
 
-                                    <tr class="cart-item-@item.Id">
-                                        <td class="product-thumbnail">
-                                            <a asp-controller="HangHoa" asp-action="Detail" asp-route-id="@item.Id"><img src="~/Hinh/HangHoa/@item.Hinh" alt="man" /></a>
-                                        </td>
-                                        <td class="product-name"><a href="#">@item.TenHH</a></td>
-                                        <td class="product-price"><span class="amount">@item.ThanhTien</span></td>
-                                        <td class="product-quantity"><input type="number" value="@item.SoLuong"></td>
-                                        <td class="product-subtotal">£165.00</td>
-                                        <td class="product-remove">
-                                            <a href="#">
-                                                <i class="fa fa-times"></i>
-                                            </a>
-                                            <a asp-controller="Cart" asp-action="RemoveCartItem" asp-route-id="@item.Id">
-                                                <i class="fa fa-times"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                        <a class="remove-cart-item" data-id="@item.Id">
+                                            <i class="fa fa-times">bbb</i>
+                                        </a>
 
-                                }
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
 
                         </table>
@@ -53,8 +61,12 @@
             <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
                 <div class="buttons-cart mb-30">
                     <ul>
-                        <li><a href="#">Update Cart</a></li>
-                        <li><a href="#">Continue Shopping</a></li>
+                        <li>
+                            <a href="#">Update Cart</a>
+                        </li>
+                        <li>
+                            <a href="#">Continue Shopping</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="coupon">
@@ -71,39 +83,39 @@
                     <h2>Cart Totals</h2>
                     <table>
                         <tbody>
-                            <tr class="cart-subtotal">
-                                <th>Subtotal</th>
-                                <td>
-                                    <span class="amount">£215.00</span>
-                                </td>
-                            </tr>
-                            <tr class="shipping">
-                                <th>Shipping</th>
-                                <td>
-                                    <ul id="shipping_method">
-                                        <li>
-                                            <input type="radio">
-                                            <label>
-                                                Flat Rate:
-                                                <span class="amount">£7.00</span>
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <input type="radio">
-                                            <label> Free Shipping </label>
-                                        </li>
-                                    </ul>
-                                    <a href="#">Calculate Shipping</a>
-                                </td>
-                            </tr>
-                            <tr class="order-total">
-                                <th>Total</th>
-                                <td>
-                                    <strong>
-                                        <span class="amount">@Model.Sum(p => p.ThanhTien).ToVnd()</span>
-                                    </strong>
-                                </td>
-                            </tr>
+                        <tr class="cart-subtotal">
+                            <th>Subtotal</th>
+                            <td>
+                                <span class="amount">£215.00</span>
+                            </td>
+                        </tr>
+                        <tr class="shipping">
+                            <th>Shipping</th>
+                            <td>
+                                <ul id="shipping_method">
+                                    <li>
+                                        <input type="radio">
+                                        <label>
+                                            Flat Rate:
+                                            <span class="amount">£7.00</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <input type="radio">
+                                        <label> Free Shipping </label>
+                                    </li>
+                                </ul>
+                                <a href="#">Calculate Shipping</a>
+                            </td>
+                        </tr>
+                        <tr class="order-total">
+                            <th>Total</th>
+                            <td>
+                                <strong>
+                                    <span class="amount">@Model.Sum(p => p.ThanhTien).ToVnd()</span>
+                                </strong>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                     <div class="wc-proceed-to-checkout">
@@ -115,3 +127,37 @@
     </div>
 </div>
 <!-- cart-main-area-end -->
+
+@section Scripts{
+    <script>
+        $(function()
+            {
+                $(".remove-cart-item").click(function()
+                {
+                    console.log("hAAA");
+
+                        let cartItemId = $(this).data("id");
+                        $.ajax({
+                            url: "/Cart/RemoveCartItem",
+                            data: {
+                                isAjaxCall: true,
+                                id: cartItemId
+                            },
+                            success: function (result) {
+                                $("#CartItemCount").html(result.soLuong);
+                               
+                                $(".cart-item-" + cartItemId).remove();
+                                Swal.fire({
+                                    title: "Remove Item",
+                                    text: "Successfull",
+                                    icon: "success",
+                                    button: "Aww yiss!",
+                                });
+
+                            }
+                        })
+                });
+
+            });
+    </script>
+}

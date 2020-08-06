@@ -9,13 +9,13 @@
 <ul>
     <li>
         <a asp-controller="Cart"><i class="fa fa-shopping-cart"></i>My Cart</a>
-        <span>@myCart.Count</span>
+        <span id="CartItemCount">@myCart.Count</span>
         <div class="mini-cart-sub">
             @foreach (var item in myCart)
             {
                 <div class="cart-product">
 
-                    <div class="single-cart">
+                    <div class="single-cart cart-item-@item.Id">
                         <div class="cart-img">
                             <a href="#"><img src="~/Hinh/HangHoa/@item.Hinh" alt="book" /></a>
                         </div>
