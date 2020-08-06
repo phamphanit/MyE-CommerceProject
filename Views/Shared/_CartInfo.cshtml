@@ -1,0 +1,43 @@
+@using FinalProject.Helpers
+@{
+    var myCart = Context.Session.Get<List<CartItem>>("GioHang");
+    if(myCart == null)
+    {
+        myCart = new List<CartItem>();
+    }
+}
+<ul>
+    <li>
+        <a asp-controller="Cart"><i class="fa fa-shopping-cart"></i>My Cart</a>
+        <span>@myCart.Count</span>
+        <div class="mini-cart-sub">
+            @foreach (var item in myCart)
+            {
+                <div class="cart-product">
+
+                    <div class="single-cart">
+                        <div class="cart-img">
+                            <a href="#"><img src="~/Hinh/HangHoa/@item.Hinh" alt="book" /></a>
+                        </div>
+                        <div class="cart-info">
+                            <h5><a href="#">@item.TenHH</a></h5>
+                            <p>@item.SoLuong x @item.DonGia.ToVnd()</p>
+                        </div>
+                        <div class="cart-icon">
+                            <a href="#"><i class="fa fa-remove"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+            <div class="cart-totals">
+                <h5>Total <span>@myCart.Sum(p=>p.ThanhTien).ToVnd()</span></h5>
+            </div>
+            <div class="cart-bottom">
+                <a class="view-cart" href="cart.html">view cart</a>
+                <a href="checkout.html">Check out</a>
+            </div>
+        </div>
+    </li>
+</ul>

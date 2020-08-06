@@ -1,0 +1,23 @@
+@model IEnumerable<FinalProject.DataModels.Loai>
+
+@{
+    var LV1 = Model.Where(p => !p.MaLoaiCha.HasValue).ToList();
+}
+@foreach (var lv1 in LV1)
+{
+    var LV2 = Model.Where(p=>p.MaLoaiCha == lv1.MaLoai).ToList();
+    
+    <li>
+                                <a asp-controller="HangHoa" asp-action="Index" asp-route-MaLoai="@lv1.MaLoai">@lv1.TenLoai<i class="fa fa-angle-down"></i></a>
+                                <div class="mega-menu">
+                                    <span>
+                                        @foreach (var lv2 in LV2)
+                                        {
+                                            <a asp-controller="HangHoa" asp-action="Index" asp-route-MaLoai="@lv2.MaLoai" class="title">@lv2.TenLoai</a>
+                                        }
+
+                                    </span>
+                                   
+                                </div>
+                            </li>
+}
