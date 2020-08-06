@@ -1,11 +1,10 @@
 ﻿using System;
-namespace FinalProject.ViewModel
+namespace FinalProject.Models
 {
-    public class EmptyClass
+    public class PagingModel
     {
-         
+
         public int Value { get; set; }
         public string Text { get; set; }
     }
 }
-

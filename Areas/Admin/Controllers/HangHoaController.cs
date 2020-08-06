@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.DataModels;
+using Microsoft.AspNetCore.Http;
+using FinalProject.Helpers;
+using FinalProject.ViewModels;
 
 namespace FinalProject.Areas.Admin.Controllers
 {
@@ -48,7 +51,11 @@ namespace FinalProject.Areas.Admin.Controllers
         // GET: Admin/HangHoa/Create
         public IActionResult Create()
         {
-            ViewData["MaLoai"] = new SelectList(_context.loais, "MaLoai", "TenLoai");
+            //ViewData["MaLoai"] = new SelectList(_context.loais, "MaLoai", "TenLoai");
+            ViewBag.Data = new LoaiDropDownVM
+            {
+                Data = _context.loais.ToList()
+            };
             return View();
         }
 
@@ -57,16 +64,27 @@ namespace FinalProject.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MaHH,TenHH,SoLuong,DonGia,MoTa,Hinh,ChiTiet,GiamGia,MaLoai")] HangHoa hangHoa)
+        public async Task<IActionResult> Create([Bind("Id,MaHH,TenHH,SoLuong,DonGia,MoTa,ChiTiet,GiamGia,MaLoai")] HangHoa hangHoa,IFormFile Hinh)
         {
             if (ModelState.IsValid)
-            {
+            { 
+                if (Hinh != null)
+                {
+                    hangHoa.Hinh =  await MyTools.ProcessUploadHinh(Hinh, "HangHoa");
+                   
+                }
+            
                 hangHoa.Id = Guid.NewGuid();
                 _context.Add(hangHoa);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaLoai"] = new SelectList(_context.loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
+            //ViewData["MaLoai"] = new SelectList(_context.loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
+
+            ViewBag.Data = new LoaiDropDownVM
+            {
+                Data = _context.loais.ToList()
+            };
             return View(hangHoa);
         }
 

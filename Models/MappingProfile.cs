@@ -1,8 +1,9 @@
 using AutoMapper;
+using FinalProject.DataModels;
 using FinalProject.Models;
 using FinalProject.ViewModels;
 
-namespace FinalProject.DataModels
+namespace FinalProject.Models
 {
     public class MappingProfile : Profile
     {

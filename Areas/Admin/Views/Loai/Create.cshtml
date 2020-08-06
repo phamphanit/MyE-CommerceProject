@@ -19,7 +19,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="MaLoaiCha" class="control-label"></label>
-                <select asp-for="MaLoaiCha" class ="form-control" asp-items="ViewBag.MaLoaiCha"></select>
+                @{
+                    var selectLoai = ViewBag.Data as FinalProject.ViewModels.LoaiDropDownVM;
+                }
+                @await Html.PartialAsync("LoaiDrop",selectLoai)
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

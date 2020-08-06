@@ -1,8 +1,5 @@
 @model FinalProject.DataModels.HangHoa
 
-@{
-    Layout = null;
-}
 
 <!DOCTYPE html>
 
@@ -17,7 +14,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="MaHH" class="control-label"></label>
@@ -46,7 +43,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Hinh" class="control-label"></label>
-                <input asp-for="Hinh" class="form-control" />
+                <input asp-for="Hinh" class="form-control" type="file"/>
                 <span asp-validation-for="Hinh" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -61,7 +58,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="MaLoai" class="control-label"></label>
-                <select asp-for="MaLoai" class ="form-control" asp-items="ViewBag.MaLoai"></select>
+                @{
+                    var selectLoai = ViewBag.Data as FinalProject.ViewModels.LoaiDropDownVM;
+                }
+                @await Html.PartialAsync("../Loai/LoaiDrop", selectLoai)
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
