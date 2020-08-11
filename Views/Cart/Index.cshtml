@@ -134,7 +134,7 @@
             {
                 $(".remove-cart-item").click(function()
                 {
-                    console.log("hAAA");
+                    console.log("test jquery");
 
                         let cartItemId = $(this).data("id");
                         $.ajax({
@@ -144,7 +144,8 @@
                                 id: cartItemId
                             },
                             success: function (result) {
-                                $("#CartItemCount").html(result.soLuong);
+                                $("#CartItemCount").html(result.soLuong); //soLuong and tongTien get from Json(CartInfo)
+                                $("#CartCashSum").html(result.tongTien)
                                
                                 $(".cart-item-" + cartItemId).remove();
                                 Swal.fire({
@@ -157,6 +158,9 @@
                             }
                         })
                 });
+            $(".CartItemCount").ajax({
+
+            })
 
             });
     </script>

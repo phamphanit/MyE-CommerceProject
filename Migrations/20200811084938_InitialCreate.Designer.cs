@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20200719155738_InitialCreateeee")]
-    partial class InitialCreateeee
+    [Migration("20200811084938_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,94 @@ namespace FinalProject.Migrations
                 .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("FinalProject.DataModels.ChiTietDonHang", b =>
+                {
+                    b.Property<int>("MaCtDh")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("DonGia")
+                        .HasColumnType("float");
+
+                    b.Property<long>("MaDonHang")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("MaHangHoa")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SoLuong")
+                        .HasColumnType("int");
+
+                    b.HasKey("MaCtDh");
+
+                    b.HasIndex("MaDonHang");
+
+                    b.HasIndex("MaHangHoa");
+
+                    b.ToTable("ChiTietDonHang");
+                });
+
+            modelBuilder.Entity("FinalProject.DataModels.Customer", b =>
+                {
+                    b.Property<string>("IdCust")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameCust")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PassWord")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RandomKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("IdCust");
+
+                    b.ToTable("Customer");
+                });
+
+            modelBuilder.Entity("FinalProject.DataModels.DonHang", b =>
+                {
+                    b.Property<long>("MaHoaDon")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("MaKH")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("NgayDat")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("NgayGiao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PhuongThucThanhToan")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrangThaiDatHang")
+                        .HasColumnType("int");
+
+                    b.HasKey("MaHoaDon");
+
+                    b.HasIndex("MaKH");
+
+                    b.ToTable("DonHang");
+                });
 
             modelBuilder.Entity("FinalProject.DataModels.HangHoa", b =>
                 {
@@ -109,6 +197,28 @@ namespace FinalProject.Migrations
                     b.HasIndex("MaLoaiCha");
 
                     b.ToTable("Loai");
+                });
+
+            modelBuilder.Entity("FinalProject.DataModels.ChiTietDonHang", b =>
+                {
+                    b.HasOne("FinalProject.DataModels.DonHang", "DonHang")
+                        .WithMany("ChiTietDonHangs")
+                        .HasForeignKey("MaDonHang")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinalProject.DataModels.HangHoa", "HangHoa")
+                        .WithMany()
+                        .HasForeignKey("MaHangHoa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FinalProject.DataModels.DonHang", b =>
+                {
+                    b.HasOne("FinalProject.DataModels.Customer", "Customer")
+                        .WithMany("DonHangs")
+                        .HasForeignKey("MaKH");
                 });
 
             modelBuilder.Entity("FinalProject.DataModels.HangHoa", b =>

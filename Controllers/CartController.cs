@@ -6,7 +6,7 @@ using FinalProject.DataModels;
 using FinalProject.Helpers;
 using FinalProject.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace FinalProject.Controllers
 {
@@ -35,19 +35,13 @@ namespace FinalProject.Controllers
                 return myCart;
             }
         }
-        public CartInfo CartInf => new CartInfo
-        {
-            SoLuong = CartItems.Count,
-            TongTien = CartItems.Sum(p => p.ThanhTien)
-        };
-        
 
         public IActionResult Index()
         {
             return View(CartItems);
         }
 
-        public IActionResult AddtoCart(Guid id, int soLuong = 1)
+        public IActionResult AddtoCart(Guid id, int soLuong = 1, bool isAjaxCall = false)
 
         {
             var myCart = CartItems;
@@ -68,16 +62,36 @@ namespace FinalProject.Controllers
 
             return RedirectToAction("Index");
         }
+        public CartInfo CartInfo => new CartInfo
+        {
+            SoLuong = CartItems.Count,
+            TongTien = CartItems.Sum(p => p.ThanhTien)
+        };
         public IActionResult RemoveCartItem(Guid id, bool isAjaxCall = false)
         {
             var myCart = CartItems;
             var cartItem = myCart.SingleOrDefault(p => p.Id == id);
-            if(cartItem != null)
+            if (cartItem != null)
             {
                 myCart.Remove(cartItem);
             }
             HttpContext.Session.Set("GioHang", myCart);
+            if (isAjaxCall)
+            {
+                return Json(CartInfo);
+            }
             return RedirectToAction("Index");
+        }
+        public IActionResult Test()
+        {
+            var a = _context.hangHoas.Include(hh => hh.Loai).ToList();
+            var b = _context.hangHoas.Include("Loai").ToList();
+            var c = _context.hangHoas.SingleOrDefault(hh => hh.MaLoai == 1);
+            var d = _context.loais.ToList();
+
+
+
+            return Json(d);
         }
     }
 }
