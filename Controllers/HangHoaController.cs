@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using FinalProject.DataModels;
 using FinalProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

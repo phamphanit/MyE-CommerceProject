@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using FinalProject.Models;
 using Microsoft.AspNetCore.Http;
@@ -45,6 +46,17 @@ namespace FinalProject.Helpers
                     new PagingModel{Value = 100, Text ="100"},
                 };
             }
+        }
+
+        public static string GetRandom(int length = 5)
+        {
+            var pattern = @"1234567890qazwsxedcrfvtgbyhn@#$%";
+            Random rd = new Random();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < length; i++)
+                sb.Append(pattern[rd.Next(0, pattern.Length)]);
+
+            return sb.ToString();
         }
     }
 }

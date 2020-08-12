@@ -21,14 +21,12 @@ namespace FinalProject.Areas.Admin.Controllers
         {
             _context = context;
         }
-
         // GET: Admin/HangHoa
         public async Task<IActionResult> Index()
         {
             var myDbContext = _context.hangHoas.Include(h => h.Loai);
             return View(await myDbContext.ToListAsync());
         }
-
         // GET: Admin/HangHoa/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {

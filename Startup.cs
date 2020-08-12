@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace FinalProject
 {
     public class Startup
@@ -26,13 +28,20 @@ namespace FinalProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            
+
             services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyConnection")));
-            services.AddSession( p=>
-            { p.Cookie.Name = "Phansession";
-                p.IdleTimeout = TimeSpan.FromSeconds(1000);
-            });
+            services.AddSession(p =>
+           {
+               p.Cookie.Name = "Phansession";
+               p.IdleTimeout = TimeSpan.FromSeconds(1000);
+           });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+                opt =>
+                {
+                    opt.LoginPath = "/Customer/SignIn";
+                }
+                    );
 
         }
 
@@ -54,7 +63,7 @@ namespace FinalProject
             app.UseSession();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -63,7 +72,7 @@ namespace FinalProject
                     name: "areas",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
-                    name:"default",
+                    name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
