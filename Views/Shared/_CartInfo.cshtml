@@ -1,4 +1,5 @@
 @using FinalProject.Helpers
+
 @{
     var myCart = Context.Session.Get<List<CartItem>>("GioHang");
     if(myCart == null)

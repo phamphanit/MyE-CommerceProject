@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using FinalProject.Common;
 using FinalProject.DataModels;
 using FinalProject.Helpers;
 using FinalProject.Models;
+using FinalProject.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -82,7 +84,8 @@ namespace FinalProject.Controllers
             }
             return RedirectToAction("Index");
         }
-        public IActionResult Test()
+        //example TestLinQ
+        public IActionResult TestLinq()
         {
             var a = _context.hangHoas.Include(hh => hh.Loai).ToList();
             var b = _context.hangHoas.Include("Loai").ToList();
@@ -92,6 +95,73 @@ namespace FinalProject.Controllers
 
 
             return Json(d);
+        }
+        public IActionResult ProcessCheckout()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ProcessCheckout(RegisterViewModel model)
+        {
+            try
+            {
+                _context.Database.BeginTransaction();
+                var customer = new Customer();
+                if (User.Identity.IsAuthenticated)
+                {
+                    var _IdCust = User.Claims.FirstOrDefault(p => p.Type == MyClaimType.CustomerID);
+                    customer.IdCust = _IdCust.Value;
+                }
+                else
+                {
+                    customer = new Customer
+                    {
+                        IdCust = Guid.NewGuid().ToString(),
+                        NameCust = model.CustName,
+                        Phone = model.Phone,
+                        Email = model.Email,
+                    };
+
+                    _context.Add(customer);
+                    _context.SaveChanges();
+                }
+                var Order = new DonHang
+                {
+                    MaKH = customer.IdCust,
+                    NgayDat = DateTime.Now,
+                    TrangThaiDatHang = OrderStatus.Open,
+                    PhuongThucThanhToan = PaymentMethod.COD,
+                };
+                _context.Add(Order);
+                _context.SaveChanges();
+
+                foreach (var item in CartItems)
+                {
+                    var OrderDetail = new ChiTietDonHang
+                    {
+                        MaDonHang = Order.MaHoaDon,
+                        MaHangHoa = item.Id,
+                        SoLuong = item.SoLuong,
+                        DonGia = item.DonGia,
+
+
+                    };
+                    _context.Add(OrderDetail);
+                }
+                _context.SaveChanges();
+                HttpContext.Session.Remove("GioHang");
+                _context.Database.CommitTransaction();
+
+            }
+            catch (Exception exp)
+            {
+                _context.Database.RollbackTransaction();
+            }
+            return View();
+        }
+        public IActionResult Test()
+        {
+            return View();
         }
     }
 }

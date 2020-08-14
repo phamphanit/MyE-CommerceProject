@@ -85,7 +85,6 @@ namespace FinalProject.Controllers
                         new ClaimsPrincipal(claimsIdentity), authProperties);
                     if (Url.IsLocalUrl(ReturnUrl))
                     {
-                        ViewBag.ReturnUrl = ReturnUrl;
                         return Redirect(ReturnUrl);
                     }
                     return Redirect("/HangHoa");

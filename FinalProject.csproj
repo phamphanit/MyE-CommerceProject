@@ -19,6 +19,7 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="ViewModels\" />
     <Folder Include="wwwroot\Hinh\HangHoa\" />
+    <Folder Include="wwwroot\js\vendor\" />
   </ItemGroup>
 
   <ItemGroup>
